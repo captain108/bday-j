@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Ful 🎂💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ===== BASE ===== */
+body{
+    margin:0;
+    font-family:"Poppins",sans-serif;
+    background: linear-gradient(180deg,#fde2e4 0%, #f9c5d1 100%);
+    color:#4a2c34;
+    overflow-x:hidden;
+}
+
+/* ===== COUNTDOWN ===== */
+#countdown-screen{
+    position:fixed;
+    inset:0;
+    background: linear-gradient(180deg,#fde2e4,#f9c5d1);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+}
+#count{
+    font-family:"Playfair Display",serif;
+    font-size:68px;
+    font-weight:600;
+    color:#ff4f8b;
+    animation:pop 1s ease;
+}
+@keyframes pop{
+    from{transform:scale(.5);opacity:0}
+    to{transform:scale(1);opacity:1}
+}
+
+/* ===== HERO ===== */
+#hero{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:26px 12px 10px;
+}
+#hero h1{
+    font-family:"Playfair Display",serif;
+    font-size:32px;
+    color:#c9184a;
+    margin:0 0 4px;
+}
+#hero h2{
+    font-size:14px;
+    color:#6d3b47;
+    margin:0;
+}
+
+/* IMAGE */
+.birthday-img{
+    width:200px;
+    border-radius:22px;
+    margin:12px auto 6px;
+    background:linear-gradient(135deg,#ffe5ec,#ffc2d1);
+    padding:6px;
+    box-shadow:0 10px 22px rgba(201,24,74,0.22);
+}
+
+/* ===== REAL AUDIO BARS ===== */
+#audioBars{
+    display:none;
+    margin:4px auto 6px;
+    height:32px;
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    gap:4px;
+}
+#audioBars span{
+    width:4px;
+    height:6px;
+    background:#ff4f8b;
+    border-radius:3px;
+    transition:height .08s linear;
+    opacity:.85;
+}
+
+/* ===== CONTENT ===== */
+.section{
+    padding:4px 0 18px;
+}
+
+/* ===== CARD ===== */
+.card{
+    background:linear-gradient(135deg,#fff1f4,#ffe5ec);
+    width:94%;
+    margin:12px auto;
+    padding:18px 16px;
+    border-radius:18px;
+    box-shadow:0 8px 16px rgba(201,24,74,0.16);
+
+    opacity:0;
+    transform:translateY(30px) scale(0.97);
+    filter:blur(2px);
+    transition:all .6s ease;
+}
+.card.show{
+    opacity:1;
+    transform:translateY(0) scale(1);
+    filter:blur(0);
+}
+.card.active{
+    box-shadow:0 14px 28px rgba(201,24,74,0.28);
+}
+
+/* TEXT */
+.card p{
+    font-size:15.5px;
+    line-height:1.6;
+    letter-spacing:0.2px;
+    text-align:center;
+}
+.card b{
+    font-weight:500;
+    color:#c9184a;
+}
+.card p::after{
+    content:"";
+    display:block;
+    width:34px;
+    height:2px;
+    background:#f4a6b8;
+    margin:12px auto 0;
+    border-radius:2px;
+    opacity:.6;
+}
+
+/* HEARTS */
+.heart{
+    position:fixed;
+    bottom:-20px;
+    font-size:17px;
+    color:#ff4f8b;
+    opacity:.35;
+    animation:heartFloat 10s linear infinite;
+}
+@keyframes heartFloat{
+    to{transform:translateY(-120vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<!-- COUNTDOWN -->
+<div id="countdown-screen">
+    <div id="count">5</div>
+</div>
+
+<!-- AUDIO -->
+<audio id="song" src="song.mp3" loop></audio>
+
+<!-- HERO -->
+<div id="hero" style="display:none;">
+    <h1>🎂 Happy Birthday Ful ❤️</h1>
+    <h2>💕</h2>
+
+    <img src="https://i.ibb.co/k2MZyP1c/photo-2026-01-11-18-56-37.jpg" class="birthday-img">
+
+    <!-- AUDIO BARS -->
+    <div id="audioBars">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="section" id="content" style="display:none;">
+
+<div class="card">
+<p>
+You are my best friend and also meri najayaj pati 😹💗💗<br>
+Thank you for always being with me in life 😁🦄<br><br>
+Thank you so much for always supporting me ❤️<br>
+May your day today be very special and wonderful and the days to come too 😉🍻
+</p>
+</div>
+
+<div class="card">
+<p>
+<b>Happy birthday ful ✧･ﾟ 🎀💗</b><br>
+Happy Birthday to my beautiful girl 🤍<br>
+Here's to another year of laughing at our own jokes and keeping each other sane 💖🦋
+</p>
+</div>
+
+<div class="card">
+<p>
+<b>Again happy wala birthday mere sakuni maaaaaameeeee 😹🥳🥳🥳🤍</b><br><br>
+📸🍧🍨🍭🍰🧁🎂🎂🎂🍿🍩🍺🍻🥂🍷🍾
+</p>
+</div>
+
+<div class="card">
+<p>
+<b>Love you so much 🧿🥂</b><br><br>
+Again and again happy wala birthday bhukti doremon 😁<br>
+hope tumko acha laga ho 🥺🤍
+</p>
+</div>
+
+</div>
+
+<script>
+/* COUNTDOWN */
+let n=5;
+const count=document.getElementById("count");
+const screen=document.getElementById("countdown-screen");
+const hero=document.getElementById("hero");
+const content=document.getElementById("content");
+
+const cd=setInterval(()=>{
+    n--;
+    if(n>0){
+        count.textContent=n;
+        count.style.animation="none";
+        count.offsetHeight;
+        count.style.animation="pop 1s ease";
+    }else{
+        clearInterval(cd);
+        screen.style.display="none";
+        hero.style.display="flex";
+        content.style.display="block";
+        document.getElementById("audioBars").style.display="flex";
+        startBeat();
+    }
+},1000);
+
+/* SCROLL EFFECT */
+const cards=document.querySelectorAll(".card");
+window.addEventListener("scroll",()=>{
+    cards.forEach(card=>{
+        const r=card.getBoundingClientRect();
+        if(r.top<window.innerHeight-80) card.classList.add("show");
+        if(r.top<window.innerHeight/2 && r.bottom>window.innerHeight/2)
+            card.classList.add("active");
+        else card.classList.remove("active");
+    });
+});
+
+/* HEARTS */
+setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML=Math.random()>0.5?"💖":"💗";
+    h.style.left=Math.random()*90+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),9000);
+},1700);
+
+/* ===== REAL BEAT SYNC ===== */
+const audio=document.getElementById("song");
+const bars=document.querySelectorAll("#audioBars span");
+let audioCtx, analyser, source, data;
+
+function startBeat(){
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    analyser=audioCtx.createAnalyser();
+    source=audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize=256;
+    data=new Uint8Array(analyser.frequencyBinCount);
+    audio.play();
+    animateBars();
+}
+
+function animateBars(){
+    requestAnimationFrame(animateBars);
+    analyser.getByteFrequencyData(data);
+    bars.forEach((bar,i)=>{
+        const v=data[i*4]||0;
+        bar.style.height=Math.max(6,v/3)+"px";
+    });
+}
+</script>
+
+</body>
+</html>
