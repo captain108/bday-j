@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
+/* ===== BASE ===== */
 body{
     margin:0;
     font-family:"Poppins",sans-serif;
@@ -16,7 +17,7 @@ body{
     overflow-x:hidden;
 }
 
-/* COUNTDOWN */
+/* ===== COUNTDOWN ===== */
 #countdown-screen{
     position:fixed;
     inset:0;
@@ -30,16 +31,21 @@ body{
     font-family:"Playfair Display",serif;
     font-size:68px;
     color:#ff4f8b;
+    animation:pop 1s ease;
+}
+@keyframes pop{
+    from{transform:scale(.5);opacity:0}
+    to{transform:scale(1);opacity:1}
 }
 
-/* HERO */
+/* ===== HERO ===== */
 #hero{
     display:none;
     flex-direction:column;
     align-items:center;
     text-align:center;
     padding:26px 12px 10px;
-    gap:6px;
+    gap:6px;                 /* 🔑 spacing lock */
 }
 #hero h1{
     font-family:"Playfair Display",serif;
@@ -53,25 +59,28 @@ body{
     margin:0;
 }
 
+/* IMAGE */
 .birthday-img{
     width:200px;
-    display:block;
+    display:block;           /* 🔑 important */
     border-radius:22px;
-    margin:10px auto 4px;
+    margin:10px auto 4px;    /* 🔑 bottom space */
     background:linear-gradient(135deg,#ffe5ec,#ffc2d1);
     padding:6px;
     box-shadow:0 10px 22px rgba(201,24,74,0.22);
 }
 
-/* AUDIO BARS */
+/* ===== AUDIO BARS ===== */
 #audioBars{
     display:none;
-    margin:6px auto 4px;
+    margin:6px auto 4px;     /* 🔑 image ke niche */
     height:28px;
     display:flex;
     justify-content:center;
     align-items:flex-end;
     gap:4px;
+    position:relative;
+    z-index:1;               /* 🔑 image ke upar nahi */
 }
 #audioBars span{
     width:4px;
@@ -82,8 +91,12 @@ body{
     opacity:.9;
 }
 
-/* CONTENT */
-.section{padding:6px 0 18px;}
+/* ===== CONTENT ===== */
+.section{
+    padding:6px 0 18px;
+}
+
+/* ===== CARD ===== */
 .card{
     background:linear-gradient(135deg,#fff1f4,#ffe5ec);
     width:94%;
@@ -91,15 +104,28 @@ body{
     padding:18px 16px;
     border-radius:18px;
     box-shadow:0 8px 16px rgba(201,24,74,0.16);
+
     opacity:0;
     transform:translateY(30px) scale(.97);
     filter:blur(2px);
     transition:.6s;
 }
-.card.show{opacity:1;transform:none;filter:none}
-.card.active{box-shadow:0 14px 28px rgba(201,24,74,0.28)}
-.card p{font-size:15.5px;line-height:1.6;text-align:center}
-.card b{color:#c9184a}
+.card.show{
+    opacity:1;
+    transform:none;
+    filter:none;
+}
+.card.active{
+    box-shadow:0 14px 28px rgba(201,24,74,0.28);
+}
+.card p{
+    font-size:15.5px;
+    line-height:1.6;
+    text-align:center;
+}
+.card b{
+    color:#c9184a;
+}
 </style>
 </head>
 
@@ -121,6 +147,7 @@ body{
     <img src="https://i.ibb.co/k2MZyP1c/photo-2026-01-11-18-56-37.jpg"
          class="birthday-img">
 
+    <!-- AUDIO BARS -->
     <div id="audioBars">
         <span></span><span></span><span></span><span></span><span></span>
         <span></span><span></span><span></span><span></span><span></span>
@@ -130,10 +157,27 @@ body{
 
 <!-- CONTENT -->
 <div class="section" id="content" style="display:none;">
-<div class="card"><p>You are my best friend and also meri najayaj pati 😹💗💗</p></div>
-<div class="card"><p><b>Happy birthday ful ✧･ﾟ 🎀💗</b></p></div>
-<div class="card"><p><b>Again happy wala birthday 😹🥳🥳🥳🤍</b></p></div>
-<div class="card"><p><b>Love you so much 🧿🥂</b></p></div>
+
+<div class="card"><p>
+You are my best friend and also meri najayaj pati 😹💗💗<br>
+Thank you for always being with me in life 😁🦄<br><br>
+Thank you so much for always supporting me ❤️
+</p></div>
+
+<div class="card"><p>
+<b>Happy birthday ful ✧･ﾟ 🎀💗</b><br>
+Happy Birthday to my beautiful girl 🤍
+</p></div>
+
+<div class="card"><p>
+<b>Again happy wala birthday mere sakuni maaaaaameeeee 😹🥳🥳🥳🤍</b>
+</p></div>
+
+<div class="card"><p>
+<b>Love you so much 🧿🥂</b><br>
+Again and again happy wala birthday 😁
+</p></div>
+
 </div>
 
 <script>
@@ -146,13 +190,14 @@ const screen=document.getElementById("countdown-screen");
 
 const cd=setInterval(()=>{
     n--;
-    if(n>0) count.textContent=n;
-    else{
+    if(n>0){
+        count.textContent=n;
+    }else{
         clearInterval(cd);
         screen.style.display="none";
         hero.style.display="flex";
         content.style.display="block";
-        prepareAudio();
+        startAudio();
     }
 },1000);
 
@@ -161,9 +206,9 @@ const audio=document.getElementById("song");
 const bars=document.querySelectorAll("#audioBars span");
 let audioCtx, analyser, data;
 
-function prepareAudio(){
-    document.getElementById("audioBars").style.display="flex";
-    audio.muted=true;   // unlock later
+function startAudio(){
+    audioBars.style.display="flex";
+    audio.muted=false;
     audio.volume=1;
 
     audioCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -173,33 +218,26 @@ function prepareAudio(){
     analyser.connect(audioCtx.destination);
     analyser.fftSize=256;
     data=new Uint8Array(analyser.frequencyBinCount);
-    animateBars();
-}
 
-function startAudio(){
-    if(!audioCtx) return;
-    if(audioCtx.state==="suspended") audioCtx.resume();
-    audio.muted=false;
     audio.play().catch(()=>{});
+    animateBars();
 }
 
 function animateBars(){
     requestAnimationFrame(animateBars);
-    if(!analyser) return;
     analyser.getByteFrequencyData(data);
     bars.forEach((bar,i)=>{
-        bar.style.height=Math.max(6,(data[i*4]||0)/3)+"px";
+        bar.style.height=Math.max(6,data[i*4]/3)+"px";
     });
 }
 
-/* 🔥 ANY INTERACTION = AUDIO ON */
-function unlockOnInteraction(){
-    startAudio();
-}
-
-["click","touchstart","touchmove","scroll","wheel"].forEach(evt=>{
-    window.addEventListener(evt, unlockOnInteraction, { once:true, passive:true });
-});
+/* TAP TO UNLOCK SOUND (MOBILE) */
+document.body.addEventListener("click",()=>{
+    if(audioCtx && audioCtx.state==="suspended"){
+        audioCtx.resume();
+        audio.play();
+    }
+},{once:true});
 
 /* SCROLL EFFECT */
 const cards=document.querySelectorAll(".card");
