@@ -30,11 +30,6 @@ body{
     font-family:"Playfair Display",serif;
     font-size:68px;
     color:#ff4f8b;
-    animation:pop 1s ease;
-}
-@keyframes pop{
-    from{transform:scale(.5);opacity:0}
-    to{transform:scale(1);opacity:1}
 }
 
 /* HERO */
@@ -44,12 +39,13 @@ body{
     align-items:center;
     text-align:center;
     padding:26px 12px 10px;
+    gap:6px;
 }
 #hero h1{
     font-family:"Playfair Display",serif;
     font-size:32px;
     color:#c9184a;
-    margin:0 0 4px;
+    margin:0;
 }
 #hero h2{
     font-size:14px;
@@ -59,8 +55,9 @@ body{
 
 .birthday-img{
     width:200px;
+    display:block;
     border-radius:22px;
-    margin:12px auto 6px;
+    margin:10px auto 4px;
     background:linear-gradient(135deg,#ffe5ec,#ffc2d1);
     padding:6px;
     box-shadow:0 10px 22px rgba(201,24,74,0.22);
@@ -69,12 +66,12 @@ body{
 /* AUDIO BARS */
 #audioBars{
     display:none;
-    margin:4px auto 4px;
-    height:32px;
+    margin:6px auto 4px;
+    height:28px;
     display:flex;
-    gap:4px;
     justify-content:center;
     align-items:flex-end;
+    gap:4px;
 }
 #audioBars span{
     width:4px;
@@ -83,11 +80,6 @@ body{
     border-radius:3px;
     transition:height .08s linear;
     opacity:.9;
-}
-#audioText{
-    font-size:12px;
-    color:#c9184a;
-    opacity:.85;
 }
 
 /* CONTENT */
@@ -106,11 +98,7 @@ body{
 }
 .card.show{opacity:1;transform:none;filter:none}
 .card.active{box-shadow:0 14px 28px rgba(201,24,74,0.28)}
-.card p{
-    font-size:15.5px;
-    line-height:1.6;
-    text-align:center;
-}
+.card p{font-size:15.5px;line-height:1.6;text-align:center}
 .card b{color:#c9184a}
 </style>
 </head>
@@ -130,31 +118,22 @@ body{
     <h1>🎂 Happy Birthday Ful ❤️</h1>
     <h2>💕</h2>
 
-    <img src="https://i.ibb.co/k2MZyP1c/photo-2026-01-11-18-56-37.jpg" class="birthday-img">
+    <img src="https://i.ibb.co/k2MZyP1c/photo-2026-01-11-18-56-37.jpg"
+         class="birthday-img">
 
     <div id="audioBars">
         <span></span><span></span><span></span><span></span><span></span>
         <span></span><span></span><span></span><span></span><span></span>
         <span></span><span></span>
     </div>
-    <div id="audioText">🎧 Tap anywhere if sound is not audible</div>
 </div>
 
 <!-- CONTENT -->
 <div class="section" id="content" style="display:none;">
-
-<div class="card"><p>You are my best friend and also meri najayaj pati 😹💗💗<br>
-Thank you for always being with me in life 😁🦄<br><br>
-Thank you so much for always supporting me ❤️</p></div>
-
-<div class="card"><p><b>Happy birthday ful ✧･ﾟ 🎀💗</b><br>
-Happy Birthday to my beautiful girl 🤍</p></div>
-
-<div class="card"><p><b>Again happy wala birthday mere sakuni maaaaaameeeee 😹🥳🥳🥳🤍</b></p></div>
-
-<div class="card"><p><b>Love you so much 🧿🥂</b><br>
-Again and again happy wala birthday 😁</p></div>
-
+<div class="card"><p>You are my best friend and also meri najayaj pati 😹💗💗</p></div>
+<div class="card"><p><b>Happy birthday ful ✧･ﾟ 🎀💗</b></p></div>
+<div class="card"><p><b>Again happy wala birthday 😹🥳🥳🥳🤍</b></p></div>
+<div class="card"><p><b>Love you so much 🧿🥂</b></p></div>
 </div>
 
 <script>
@@ -167,24 +146,24 @@ const screen=document.getElementById("countdown-screen");
 
 const cd=setInterval(()=>{
     n--;
-    if(n>0){count.textContent=n;}
+    if(n>0) count.textContent=n;
     else{
         clearInterval(cd);
         screen.style.display="none";
         hero.style.display="flex";
         content.style.display="block";
-        startAudio();
+        prepareAudio();
     }
 },1000);
 
-/* AUDIO FIXED */
+/* AUDIO + BEAT SYNC */
 const audio=document.getElementById("song");
 const bars=document.querySelectorAll("#audioBars span");
 let audioCtx, analyser, data;
 
-function startAudio(){
-    audioBars.style.display="flex";
-    audio.muted=false;
+function prepareAudio(){
+    document.getElementById("audioBars").style.display="flex";
+    audio.muted=true;   // unlock later
     audio.volume=1;
 
     audioCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -194,34 +173,42 @@ function startAudio(){
     analyser.connect(audioCtx.destination);
     analyser.fftSize=256;
     data=new Uint8Array(analyser.frequencyBinCount);
-
-    audio.play().catch(()=>{});
     animateBars();
+}
+
+function startAudio(){
+    if(!audioCtx) return;
+    if(audioCtx.state==="suspended") audioCtx.resume();
+    audio.muted=false;
+    audio.play().catch(()=>{});
 }
 
 function animateBars(){
     requestAnimationFrame(animateBars);
+    if(!analyser) return;
     analyser.getByteFrequencyData(data);
     bars.forEach((bar,i)=>{
-        bar.style.height=Math.max(6,data[i*4]/3)+"px";
+        bar.style.height=Math.max(6,(data[i*4]||0)/3)+"px";
     });
 }
 
-/* TAP TO UNLOCK SOUND (MOBILE FIX) */
-document.body.addEventListener("click",()=>{
-    if(audioCtx && audioCtx.state==="suspended"){
-        audioCtx.resume();
-        audio.play();
-    }
-},{once:true});
+/* 🔥 ANY INTERACTION = AUDIO ON */
+function unlockOnInteraction(){
+    startAudio();
+}
 
-/* SCROLL */
+["click","touchstart","touchmove","scroll","wheel"].forEach(evt=>{
+    window.addEventListener(evt, unlockOnInteraction, { once:true, passive:true });
+});
+
+/* SCROLL EFFECT */
 const cards=document.querySelectorAll(".card");
 window.addEventListener("scroll",()=>{
     cards.forEach(c=>{
         const r=c.getBoundingClientRect();
         if(r.top<window.innerHeight-80)c.classList.add("show");
-        if(r.top<window.innerHeight/2 && r.bottom>window.innerHeight/2)c.classList.add("active");
+        if(r.top<window.innerHeight/2 && r.bottom>window.innerHeight/2)
+            c.classList.add("active");
         else c.classList.remove("active");
     });
 });
